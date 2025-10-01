@@ -7,6 +7,9 @@ WORKDIR /app
 # Set environment variables (e.g., set Python to run in unbuffered mode)
 ENV PYTHONUNBUFFERED 1
 
+# Install PyTorch with CUDA support (if needed)
+RUN uv pip install --system torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+
 # Install system dependencies for building libraries
 RUN apt-get update && apt-get install -y \
     build-essential \

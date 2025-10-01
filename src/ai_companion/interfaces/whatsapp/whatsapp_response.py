@@ -2,6 +2,8 @@ import logging
 import os
 from io import BytesIO
 from typing import Dict
+import asyncio
+import time
 
 import httpx
 from fastapi import APIRouter, Request, Response
@@ -27,6 +29,26 @@ whatsapp_router = APIRouter()
 WHATSAPP_TOKEN = os.getenv("WHATSAPP_TOKEN")
 WHATSAPP_PHONE_NUMBER_ID = os.getenv("WHATSAPP_PHONE_NUMBER_ID")
 
+# Simple in-memory dedupe: map message_id -> expiry_epoch
+_recent_msg_ids: dict[str, float] = {}
+
+def _cleanup_recent_ids():
+    now = time.time()
+    # keep entries for 300 seconds
+    to_remove = [k for k, v in _recent_msg_ids.items() if v < now]
+    for k in to_remove:
+        _recent_msg_ids.pop(k, None)
+
+def seen_message_id(message_id: str) -> bool:
+    """Return True if we've seen message_id recently; otherwise record it and return False."""
+    if not message_id:
+        return False
+    _cleanup_recent_ids()
+    if message_id in _recent_msg_ids:
+        return True
+    _recent_msg_ids[message_id] = time.time() + 300.0
+    return False
+
 
 @whatsapp_router.api_route("/whatsapp_response", methods=["GET", "POST"])
 async def whatsapp_handler(request: Request) -> Response:
@@ -45,6 +67,15 @@ async def whatsapp_handler(request: Request) -> Response:
             message = change_value["messages"][0]
             from_number = message["from"]
             session_id = from_number
+
+             # --- BEGIN: dedupe / echo-protection ---
+            # Try common keys for message id then ignore duplicates
+            message_id = message.get("id") or message.get("message_id")
+            if seen_message_id(message_id):
+                logger.info("Duplicate/echo message ignored: %s", message_id)
+                # Acknowledge with 200 so the sender (WhatsApp) does not retry
+                return Response(status_code=200)
+            # --- END: dedupe / echo-protection ---
 
             # Get user message and handle different message types
             content = ""
@@ -197,6 +228,8 @@ async def send_response(
             headers=headers,
             json=json_data,
         )
+    
+    logger.info(f"WhatsApp API response: {response.status_code} - {response.text}")
 
     return response.status_code == 200
 

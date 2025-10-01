@@ -49,6 +49,14 @@ class VectorStore:
             self._validate_env_vars()
             self.model = SentenceTransformer(self.EMBEDDING_MODEL)
             self.client = QdrantClient(url=settings.QDRANT_URL, api_key=settings.QDRANT_API_KEY)
+            # Force GPU usage if available
+            import torch
+            device = "cuda" if torch.cuda.is_available() else "cpu"
+            self.model = SentenceTransformer(self.EMBEDDING_MODEL, device=device)
+            
+        
+            if not self._collection_exists():
+                self._create_collection()
             self._initialized = True
 
     def _validate_env_vars(self) -> None:
@@ -145,7 +153,14 @@ class VectorStore:
             )
             for hit in results
         ]
-
+    def search_knowledge(self, query: str, k: int = 3) -> List[str]:
+        query_vector = self.model.encode(query).tolist()
+        results = self.client.search(
+            collection_name="knowledge_base",
+            query_vector=query_vector,
+            limit=k
+        )
+        return [hit.payload["text"] for hit in results]
 
 @lru_cache
 def get_vector_store() -> VectorStore:

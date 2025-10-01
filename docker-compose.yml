@@ -20,7 +20,7 @@ services:
       - QDRANT_HOST=localhost
       - QDRANT_URL=http://qdrant:6333
     restart: unless-stopped
-    volumes: 
+    volumes:
       - ./short_term_memory:/app/data
     depends_on:
       - qdrant
@@ -38,7 +38,15 @@ services:
       - QDRANT_HOST=localhost
       - QDRANT_URL=http://qdrant:6333
     restart: unless-stopped
-    volumes: 
+    volumes:
       - ./short_term_memory:/app/data
+      - ./knowledge:/app/knowledge
     depends_on:
       - qdrant
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

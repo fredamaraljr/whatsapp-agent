@@ -16,9 +16,9 @@ ava-stop:
 	docker compose stop
 
 ava-delete:
-	@if [ -d "long_term_memory" ]; then rm -rf long_term_memory; fi
-	@if [ -d "short_term_memory" ]; then rm -rf short_term_memory; fi
-	@if [ -d "generated_images" ]; then rm -rf generated_images; fi
+	@if exist "long_term_memory" rmdir /s /q "long_term_memory"
+	@if exist "short_term_memory" rmdir /s /q "short_term_memory"
+	@if exist "generated_images" rmdir /s /q "generated_images"
 	docker compose down
 
 format-fix:

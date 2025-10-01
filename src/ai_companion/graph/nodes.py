@@ -1,5 +1,7 @@
 import os
+from pyexpat.errors import messages
 from uuid import uuid4
+import logging
 
 from langchain_core.messages import AIMessage, HumanMessage, RemoveMessage
 from langchain_core.runnables import RunnableConfig
@@ -9,6 +11,10 @@ from ai_companion.graph.utils.chains import (
     get_character_response_chain,
     get_router_chain,
 )
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 from ai_companion.graph.utils.helpers import (
     get_chat_model,
     get_text_to_image_module,
@@ -17,7 +23,9 @@ from ai_companion.graph.utils.helpers import (
 from ai_companion.modules.memory.long_term.memory_manager import get_memory_manager
 from ai_companion.modules.schedules.context_generation import ScheduleContextGenerator
 from ai_companion.settings import settings
+from ai_companion.modules.memory.long_term.vector_store import VectorStore
 
+vector_store = VectorStore()
 
 async def router_node(state: AICompanionState):
     chain = get_router_chain()
@@ -33,29 +41,54 @@ def context_injection_node(state: AICompanionState):
         apply_activity = False
     return {"apply_activity": apply_activity, "current_activity": schedule_context}
 
+def knowledge_retrieval_node(state: AICompanionState) -> dict:
+    user_message = state["messages"][-1].content
+    logger.info(f"Retrieving knowledge for: {user_message}")
+    try:
+        relevant_chunks = vector_store.search_knowledge(user_message, k=3)
+    except Exception as e:
+        logger.error(f"Error searching knowledge: {e}")
+        relevant_chunks = []
+    # Limit chunk length to avoid prompt overflow
+    relevant_chunks = [chunk[:500] for chunk in relevant_chunks]
+    logger.info(f"Retrieved {len(relevant_chunks)} chunks (first 200 chars): {str(relevant_chunks)[:200]}...")
+    knowledge_context = "\n".join(relevant_chunks)
+    logger.info(f"Knowledge context length: {len(knowledge_context)}")
+    return {"knowledge_context": knowledge_context}
+
 
 async def conversation_node(state: AICompanionState, config: RunnableConfig):
     current_activity = ScheduleContextGenerator.get_current_activity()
     memory_context = state.get("memory_context", "")
-
-    chain = get_character_response_chain(state.get("summary", ""))
-
+    knowledge_context = state.get("knowledge_context", "")
+    
+    chain = get_character_response_chain(
+        summary=state.get("summary", ""),
+        knowledge_context=knowledge_context,
+        memory_context=memory_context,
+        current_activity=current_activity
+    )
+    
     response = await chain.ainvoke(
         {
             "messages": state["messages"],
-            "current_activity": current_activity,
-            "memory_context": memory_context,
         },
         config,
     )
+    
     return {"messages": AIMessage(content=response)}
 
 
 async def image_node(state: AICompanionState, config: RunnableConfig):
     current_activity = ScheduleContextGenerator.get_current_activity()
     memory_context = state.get("memory_context", "")
-
-    chain = get_character_response_chain(state.get("summary", ""))
+    
+    chain = get_character_response_chain(
+        summary=state.get("summary", ""),
+        knowledge_context="",
+        memory_context=memory_context,
+        current_activity=current_activity
+    )
     text_to_image_module = get_text_to_image_module()
 
     scenario = await text_to_image_module.create_scenario(state["messages"][-5:])
@@ -82,8 +115,13 @@ async def image_node(state: AICompanionState, config: RunnableConfig):
 async def audio_node(state: AICompanionState, config: RunnableConfig):
     current_activity = ScheduleContextGenerator.get_current_activity()
     memory_context = state.get("memory_context", "")
-
-    chain = get_character_response_chain(state.get("summary", ""))
+    
+    chain = get_character_response_chain(
+        summary=state.get("summary", ""),
+        knowledge_context="",
+        memory_context=memory_context,
+        current_activity=current_activity
+    )
     text_to_speech_module = get_text_to_speech_module()
 
     response = await chain.ainvoke(

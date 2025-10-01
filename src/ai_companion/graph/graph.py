@@ -11,6 +11,7 @@ from ai_companion.graph.nodes import (
     context_injection_node,
     conversation_node,
     image_node,
+    knowledge_retrieval_node,
     memory_extraction_node,
     memory_injection_node,
     router_node,
@@ -32,6 +33,9 @@ def create_workflow_graph():
     graph_builder.add_node("image_node", image_node)
     graph_builder.add_node("audio_node", audio_node)
     graph_builder.add_node("summarize_conversation_node", summarize_conversation_node)
+    graph_builder.add_node("knowledge_retrieval_node", knowledge_retrieval_node)
+    graph_builder.add_edge("memory_injection_node", "knowledge_retrieval_node")
+    graph_builder.add_edge("knowledge_retrieval_node", "conversation_node")
 
     # Define the flow
     # First extract memories from user message

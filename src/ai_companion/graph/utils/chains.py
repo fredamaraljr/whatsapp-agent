@@ -21,9 +21,13 @@ def get_router_chain():
     return prompt | model
 
 
-def get_character_response_chain(summary: str = ""):
+def get_character_response_chain(summary: str = "", knowledge_context: str = "", memory_context: str = "", current_activity: str = ""):
     model = get_chat_model()
-    system_message = CHARACTER_CARD_PROMPT
+    system_message = CHARACTER_CARD_PROMPT.format(
+        memory_context=memory_context,
+        current_activity=current_activity,
+        knowledge_context=knowledge_context
+    )
 
     if summary:
         system_message += f"\n\nSummary of conversation earlier between Ava and the user: {summary}"
