@@ -5,6 +5,9 @@ from langgraph.graph import END, START, StateGraph
 from ai_companion.graph.edges import (
     select_workflow,
     should_summarize_conversation,
+    should_verify_user,
+    after_verification,
+    after_admin_command,
 )
 from ai_companion.graph.nodes import (
     audio_node,
@@ -16,6 +19,9 @@ from ai_companion.graph.nodes import (
     memory_injection_node,
     router_node,
     summarize_conversation_node,
+    user_identification_node,
+    group_verification_node,
+    admin_command_node,
 )
 from ai_companion.graph.state import AICompanionState
 
@@ -25,6 +31,9 @@ def create_workflow_graph():
     graph_builder = StateGraph(AICompanionState)
 
     # Add all nodes
+    graph_builder.add_node("user_identification_node", user_identification_node)
+    graph_builder.add_node("group_verification_node", group_verification_node)
+    graph_builder.add_node("admin_command_node", admin_command_node)
     graph_builder.add_node("memory_extraction_node", memory_extraction_node)
     graph_builder.add_node("router_node", router_node)
     graph_builder.add_node("context_injection_node", context_injection_node)
@@ -38,8 +47,39 @@ def create_workflow_graph():
     graph_builder.add_edge("knowledge_retrieval_node", "conversation_node")
 
     # Define the flow
-    # First extract memories from user message
-    graph_builder.add_edge(START, "memory_extraction_node")
+    # First identify user
+    graph_builder.add_edge(START, "user_identification_node")
+    
+    # Check if user needs verification or admin command processing
+    graph_builder.add_conditional_edges(
+        "user_identification_node",
+        should_verify_user,
+        {
+            "group_verification_node": "group_verification_node",
+            "admin_command_node": "admin_command_node",
+            "memory_extraction_node": "memory_extraction_node",
+        }
+    )
+    
+    # After verification, either continue or end
+    graph_builder.add_conditional_edges(
+        "group_verification_node",
+        after_verification,
+        {
+            "memory_extraction_node": "memory_extraction_node",
+            "__end__": END,
+        }
+    )
+    
+    # After admin command, either continue or end
+    graph_builder.add_conditional_edges(
+        "admin_command_node",
+        after_admin_command,
+        {
+            "memory_extraction_node": "memory_extraction_node",
+            "__end__": END,
+        }
+    )
 
     # Then determine response type
     graph_builder.add_edge("memory_extraction_node", "router_node")

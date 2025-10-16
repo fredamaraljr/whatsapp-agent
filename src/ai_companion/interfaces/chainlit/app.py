@@ -49,12 +49,15 @@ async def on_message(message: cl.Message):
 
     # Process through graph with enriched message content
     thread_id = cl.user_session.get("thread_id")
+    
+    # Use a simulated phone number for Chainlit testing (thread_id based)
+    user_phone = f"+5511test{thread_id}"
 
     async with cl.Step(type="run"):
         async with AsyncSqliteSaver.from_conn_string(settings.SHORT_TERM_MEMORY_DB_PATH) as short_term_memory:
             graph = graph_builder.compile(checkpointer=short_term_memory)
             async for chunk in graph.astream(
-                {"messages": [HumanMessage(content=content)]},
+                {"messages": [HumanMessage(content=content)], "user_phone": user_phone},
                 {"configurable": {"thread_id": thread_id}},
                 stream_mode="messages",
             ):

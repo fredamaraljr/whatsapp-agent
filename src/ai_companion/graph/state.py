@@ -1,4 +1,5 @@
 from langgraph.graph import MessagesState
+from typing import Optional
 
 
 class AICompanionState(MessagesState):
@@ -13,6 +14,12 @@ class AICompanionState(MessagesState):
         audio_buffer (bytes): The audio buffer to be used for speech-to-text conversion.
         current_activity (str): The current activity of Ava based on the schedule.
         memory_context (str): The context of the memories to be injected into the character card.
+        user_phone (str): The phone number of the user interacting with the agent.
+        user_group (str): The group the user belongs to (admin, monitori, fps, avila, ffl, unverified).
+        is_first_interaction (bool): Whether this is the user's first interaction.
+        user_verified (bool): Whether the user has been verified.
+        awaiting_verification (bool): Whether the agent is waiting for user verification response.
+        knowledge_context (str): Context retrieved from knowledge base.
     """
 
     summary: str
@@ -22,3 +29,9 @@ class AICompanionState(MessagesState):
     current_activity: str
     apply_activity: bool
     memory_context: str
+    user_phone: Optional[str]
+    user_group: Optional[str]
+    is_first_interaction: bool
+    user_verified: bool
+    awaiting_verification: bool
+    knowledge_context: str
