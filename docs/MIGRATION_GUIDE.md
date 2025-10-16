@@ -75,24 +75,24 @@ from ai_companion.modules.user_management import UserManager, UserGroup
 
 def migrate_existing_users():
     """Migra usuários do sistema antigo para o novo."""
-    
+
     # Conectar ao banco antigo
     old_db = sqlite3.connect(settings.SHORT_TERM_MEMORY_DB_PATH)
     old_cursor = old_db.cursor()
-    
+
     # Inicializar novo user manager
     user_manager = UserManager(settings.USER_DB_PATH)
-    
+
     # Buscar números de telefone únicos do sistema antigo
     # (adapte a query conforme sua estrutura anterior)
     old_cursor.execute("""
         SELECT DISTINCT thread_id FROM checkpoints
     """)
-    
+
     phone_numbers = [row[0] for row in old_cursor.fetchall()]
-    
+
     print(f"Encontrados {len(phone_numbers)} números de telefone")
-    
+
     # Para cada número, criar registro com grupo FFL (padrão anterior)
     for phone in phone_numbers:
         if phone == settings.ADMIN_PHONE_NUMBER:
@@ -104,7 +104,7 @@ def migrate_existing_users():
             user = user_manager.create_user(phone, settings.ADMIN_PHONE_NUMBER)
             user_manager.verify_user(phone, UserGroup.FFL)
             print(f"✓ Migrado usuário FFL: {phone}")
-    
+
     old_db.close()
     print(f"\n✅ Migração concluída: {len(phone_numbers)} usuários")
 
@@ -121,6 +121,7 @@ python scripts/migrate_users.py
 ### 5. Testar o Sistema
 
 #### Teste 1: Admin
+
 ```
 Enviar de: +5511991668852
 Mensagem: /help
@@ -129,6 +130,7 @@ Esperado: Lista de comandos administrativos
 ```
 
 #### Teste 2: Novo Usuário
+
 ```
 Enviar de: +5511999999999 (número novo)
 Mensagem: Olá
@@ -137,6 +139,7 @@ Esperado: Pergunta de identificação de grupo
 ```
 
 #### Teste 3: Verificação de Grupo
+
 ```
 Enviar de: mesmo número acima
 Mensagem: 4
@@ -145,6 +148,7 @@ Esperado: Confirmação como FFL e ativação de features
 ```
 
 #### Teste 4: Usuário Existente
+
 ```
 Enviar de: número já migrado
 Mensagem: Qualquer mensagem
@@ -235,6 +239,7 @@ sqlite3 /app/data/users.db "SELECT * FROM users WHERE user_group='admin';"
 ### Problema: Usuários não são identificados
 
 **Solução:**
+
 ```bash
 # Verificar se user_phone está sendo passado
 tail -f logs/app.log | grep "user_phone"
@@ -246,6 +251,7 @@ tail -f logs/app.log | grep "whatsapp_handler"
 ### Problema: Banco de dados não é criado
 
 **Solução:**
+
 ```bash
 # Verificar permissões
 ls -la /app/data/
@@ -261,6 +267,7 @@ docker-compose restart
 ### Problema: Prompts não mudam por grupo
 
 **Solução:**
+
 ```python
 # Testar chains.py
 python -c "
@@ -273,6 +280,7 @@ print(get_prompt_for_group('monitori'))
 ### Problema: Admin não consegue executar comandos
 
 **Solução:**
+
 ```bash
 # Verificar ADMIN_PHONE_NUMBER no .env
 grep ADMIN_PHONE_NUMBER .env
@@ -292,12 +300,14 @@ um.create_user(settings.ADMIN_PHONE_NUMBER, settings.ADMIN_PHONE_NUMBER)
 ## 📝 Notas Importantes
 
 1. **Backup Regular**: Configurar backup automático do banco de dados
+
    ```bash
    # Adicionar ao crontab
    0 */6 * * * cp /app/data/users.db /app/backups/users_$(date +\%Y\%m\%d_\%H\%M).db
    ```
 
 2. **Monitoramento**: Configurar alertas para erros
+
    ```bash
    # Exemplo com script de monitoramento
    watch -n 60 'tail -100 /app/logs/app.log | grep -c ERROR'
@@ -313,15 +323,18 @@ um.create_user(settings.ADMIN_PHONE_NUMBER, settings.ADMIN_PHONE_NUMBER)
 ### Próximos Passos
 
 1. **Comunicar Mudanças**
+
    - Informar usuários existentes sobre novo sistema
    - Enviar instruções de uso para cada grupo
 
 2. **Treinar Admin**
+
    - Demonstrar comandos administrativos
    - Explicar como customizar prompts
    - Mostrar como visualizar estatísticas
 
 3. **Monitorar por 1 Semana**
+
    - Verificar logs diariamente
    - Responder rapidamente a problemas
    - Coletar feedback dos usuários

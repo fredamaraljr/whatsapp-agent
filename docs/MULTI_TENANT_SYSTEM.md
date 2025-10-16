@@ -7,9 +7,11 @@ O AI Companion foi transformado em um **sistema multi-tenant** que suporta difer
 ## 👥 Grupos de Usuários
 
 ### 1. **Admin** (Fred - +5511991668852)
+
 **Acesso total ao sistema**
 
 O administrador pode:
+
 - Ver estatísticas do sistema (usuários, mensagens, interações)
 - Listar todos os usuários cadastrados
 - Modificar prompts de grupos via WhatsApp
@@ -17,6 +19,7 @@ O administrador pode:
 - Acessar logs e informações técnicas
 
 **Comandos disponíveis:**
+
 ```
 /stats                    # Estatísticas do sistema
 /users                    # Lista de usuários
@@ -29,15 +32,18 @@ O administrador pode:
 ```
 
 **Exemplo:**
+
 ```
 /setprompt monitori
 Você é um especialista em análise de dados...
 ```
 
 ### 2. **Monitori**
+
 **Clientes de análise de dados**
 
 Funcionalidades:
+
 - Análises de dados via Mitto
 - Insights e relatórios
 - Dashboards e métricas
@@ -47,9 +53,11 @@ Funcionalidades:
 Usuário deve confirmar que é cliente Monitori na primeira interação.
 
 ### 3. **FPS (Faculdade Pernambucana de Saúde)**
+
 **Estudantes de medicina**
 
 Funcionalidades:
+
 - Calendário de provas
 - Casos clínicos da base de conhecimento
 - Discussão de conteúdo médico
@@ -59,9 +67,11 @@ Funcionalidades:
 Usuário deve confirmar que é estudante da FPS.
 
 ### 4. **Ávila Digital**
+
 **Colaboradores e prospects**
 
 Funcionalidades:
+
 - Demonstração de capacidades de IA
 - Simulações de diferentes grupos
 - Apresentação de funcionalidades
@@ -71,15 +81,18 @@ Funcionalidades:
 Usuário deve confirmar que trabalha na Ávila Digital.
 
 **Modo Demonstração:**
+
 ```
 "Simule o grupo Monitori"
 "Mostre como funciona para FPS"
 ```
 
 ### 5. **FFL (Flight Fans & Learners)**
+
 **Pilotos e entusiastas de aviação**
 
 Funcionalidades:
+
 - Manuais técnicos do Airbus A320 (FCOM, FCTM, MEL, CDL)
 - Explicações de procedimentos
 - Discussões operacionais
@@ -121,7 +134,9 @@ Por favor, responda com o número da opção que melhor se aplica a você.
 **Localização:** `/app/data/users.db`
 
 **Tabelas:**
+
 - `users`: Informações dos usuários
+
   - phone_number (PK)
   - user_group
   - verified
@@ -161,12 +176,14 @@ USER_DB_PATH=/app/data/users.db
 ## 📁 Arquivos Modificados
 
 ### Novos Arquivos
+
 - `src/ai_companion/modules/user_management/user_manager.py` - Gerenciamento de usuários
 - `src/ai_companion/modules/user_management/__init__.py`
 - `src/ai_companion/modules/admin/admin_commands.py` - Comandos administrativos
 - `src/ai_companion/modules/admin/__init__.py`
 
 ### Arquivos Modificados
+
 - `src/ai_companion/graph/state.py` - Adicionado campos de usuário ao estado
 - `src/ai_companion/graph/nodes.py` - Adicionado nós de identificação e verificação
 - `src/ai_companion/graph/edges.py` - Adicionado edges de roteamento
@@ -238,6 +255,7 @@ Usuários por grupo:
 ## 🛠️ Próximos Passos
 
 1. **Implementar ferramentas específicas:**
+
    - [ ] Integração Mitto para Monitori
    - [ ] Sistema de calendário para FPS
    - [ ] Upload de casos clínicos para FPS

@@ -5,6 +5,7 @@
 ## ✨ Novidades da Versão 2.0
 
 ### 🎯 Sistema Multi-Tenant
+
 Agora o AI Companion suporta **5 grupos distintos de usuários**, cada um com funcionalidades específicas:
 
 - 👨‍💼 **Admin** - Gestão total do sistema
@@ -107,6 +108,7 @@ Por favor, responda com o número...
 **Acesso:** Total ao sistema
 
 **Comandos:**
+
 ```bash
 /stats              # Estatísticas do sistema
 /users              # Lista de usuários
@@ -119,6 +121,7 @@ Por favor, responda com o número...
 ### 📊 Monitori (Análise de Dados)
 
 **Features:**
+
 - Análise de dados via Mitto
 - Insights e dashboards
 - Métricas de negócio
@@ -129,6 +132,7 @@ Por favor, responda com o número...
 ### 🏥 FPS (Faculdade Pernambucana de Saúde)
 
 **Features:**
+
 - Calendário de provas
 - Casos clínicos
 - Discussão de conteúdo médico
@@ -139,6 +143,7 @@ Por favor, responda com o número...
 ### 💼 Ávila Digital (Demonstrações)
 
 **Features:**
+
 - Apresentação de capacidades
 - Modo simulação de outros grupos
 - Demonstrações interativas
@@ -149,6 +154,7 @@ Por favor, responda com o número...
 ### ✈️ FFL (Flight Fans & Learners)
 
 **Features:**
+
 - Manuais técnicos A320 (FCOM, FCTM, MEL, CDL)
 - Explicações de procedimentos
 - Discussões operacionais
@@ -240,6 +246,7 @@ src/ai_companion/
 ### Adicionar Novo Grupo
 
 1. Adicionar enum em `user_manager.py`:
+
 ```python
 class UserGroup(Enum):
     ...
@@ -247,6 +254,7 @@ class UserGroup(Enum):
 ```
 
 2. Criar prompt em `prompts.py`:
+
 ```python
 NOVO_GRUPO_PROMPT = """
 [Prompt específico do grupo]
@@ -254,6 +262,7 @@ NOVO_GRUPO_PROMPT = """
 ```
 
 3. Adicionar à seleção em `chains.py`:
+
 ```python
 group_prompts = {
     ...
@@ -266,20 +275,23 @@ group_prompts = {
 ## 📈 Monitoramento
 
 ### Ver Logs
+
 ```bash
 tail -f /app/logs/app.log
 ```
 
 ### Estatísticas
+
 ```bash
 sqlite3 /app/data/users.db "
-SELECT user_group, COUNT(*) 
-FROM users 
+SELECT user_group, COUNT(*)
+FROM users
 GROUP BY user_group;
 "
 ```
 
 ### Backup
+
 ```bash
 # Backup automático (crontab)
 0 */6 * * * cp /app/data/users.db /backups/users_$(date +\%Y\%m\%d).db
@@ -288,6 +300,7 @@ GROUP BY user_group;
 ## 🧪 Testes
 
 ### Teste Completo
+
 ```bash
 # 1. Admin
 curl -X POST localhost:8000/whatsapp_response \
@@ -310,6 +323,7 @@ curl -X POST localhost:8000/whatsapp_response \
 ## 🚨 Troubleshooting
 
 ### Problema: Usuário não identificado
+
 ```bash
 # Verificar logs
 tail -f /app/logs/app.log | grep "user_phone"
@@ -319,6 +333,7 @@ sqlite3 /app/data/users.db "SELECT * FROM users;"
 ```
 
 ### Problema: Comandos admin não funcionam
+
 ```bash
 # Verificar .env
 grep ADMIN_PHONE_NUMBER .env
@@ -328,6 +343,7 @@ sqlite3 /app/data/users.db "SELECT * FROM users WHERE user_group='admin';"
 ```
 
 ### Problema: Prompts não mudam
+
 ```bash
 # Testar seleção de prompts
 python -c "

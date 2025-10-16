@@ -5,6 +5,7 @@
 ### 1. Admin (Fred)
 
 #### Exemplo 1: Ver Estatísticas
+
 ```
 👤 Fred: /stats
 
@@ -23,6 +24,7 @@
 ```
 
 #### Exemplo 2: Customizar Prompt
+
 ```
 👤 Fred: /setprompt monitori
 Você é um especialista em análise de dados da Monitori.
@@ -33,6 +35,7 @@ Seja direto e focado em ROI.
 ```
 
 #### Exemplo 3: Ver Configuração
+
 ```
 👤 Fred: /getprompt ffl
 
@@ -47,12 +50,13 @@ _Atualizado em: 2025-10-15T14:30:00_
 ### 2. Monitori (Análise de Dados)
 
 #### Primeira Interação
+
 ```
 👤 Cliente: Olá
 
 🤖 Ava: Olá! Seja bem-vindo(a)! 👋
 
-Para que eu possa oferecer o melhor atendimento, preciso saber 
+Para que eu possa oferecer o melhor atendimento, preciso saber
 um pouco mais sobre você.
 
 Você é:
@@ -65,11 +69,12 @@ Por favor, responda com o número da opção que melhor se aplica a você.
 
 👤 Cliente: 1
 
-🤖 Ava: Ótimo! Você foi identificado como cliente Monitori. 
+🤖 Ava: Ótimo! Você foi identificado como cliente Monitori.
 Posso ajudá-lo com análises de dados e insights. Como posso ajudar hoje?
 ```
 
 #### Conversa Normal
+
 ```
 👤 Cliente: Preciso analisar as vendas do último trimestre
 
@@ -84,6 +89,7 @@ Para fazer uma análise completa, preciso saber:
 ### 3. FPS (Estudantes de Medicina)
 
 #### Consulta sobre Provas
+
 ```
 👤 Estudante: Quando é a próxima prova de cardiologia?
 
@@ -99,10 +105,11 @@ Boa sorte nos estudos! Precisa revisar algum caso clínico?
 ```
 
 #### Discussão de Caso Clínico
+
 ```
 👤 Estudante: Me explica sobre infarto agudo do miocárdio
 
-🤖 Ava: Vamos revisar IAM! 
+🤖 Ava: Vamos revisar IAM!
 
 📚 **Infarto Agudo do Miocárdio (IAM)**
 
@@ -125,6 +132,7 @@ Quer discutir o tratamento ou algum caso específico?
 ### 4. Ávila Digital (Demonstração)
 
 #### Modo Apresentação
+
 ```
 👤 Prospect: O que você pode fazer?
 
@@ -146,6 +154,7 @@ Gostaria de ver uma simulação? Diga "simule o grupo [nome]"
 ```
 
 #### Modo Simulação
+
 ```
 👤 Colaborador: simule o grupo monitori
 
@@ -159,7 +168,7 @@ Posso ajudá-lo com:
 - Insights de negócio
 - Relatórios customizados
 
-[Esta é uma simulação para demonstração. Em produção, teria 
+[Esta é uma simulação para demonstração. Em produção, teria
 acesso real aos dados via Mitto]
 
 O que gostaria de analisar?
@@ -168,6 +177,7 @@ O que gostaria de analisar?
 ### 5. FFL (Aviação)
 
 #### Consulta Técnica
+
 ```
 👤 Piloto: Como funciona o sistema APU do A320?
 
@@ -192,13 +202,14 @@ O APU é uma turbina a gás que fornece:
 2. APU START - ON
 3. Aguardar APU AVAIL (45-60 seg)
 
-Citando o FCTM PR-AEP-APU: "O APU start normal leva 
+Citando o FCTM PR-AEP-APU: "O APU start normal leva
 aproximadamente 50 segundos."
 
 Tem alguma dúvida específica sobre operação ou limitações?
 ```
 
 #### Discussão de Procedimento
+
 ```
 👤 Piloto: Explica o procedimento de engine failure após V1
 
@@ -276,7 +287,7 @@ Os casos foram indexados e podem ser consultados normalmente.
 
 🤖 Ava: 🎭 Demonstração: Análise de Dados
 
-Imagine que você é um gerente de vendas e quer entender 
+Imagine que você é um gerente de vendas e quer entender
 o desempenho da equipe...
 
 👤 Prospect: Quais foram as vendas de ontem?
@@ -294,7 +305,7 @@ Por região:
 
 Top vendedor: João Silva (R$ 8.200)
 
-[DEMO: Em produção real, esses dados viriam do seu banco 
+[DEMO: Em produção real, esses dados viriam do seu banco
 via integração Mitto]
 
 Legal, né? É assim que funciona para clientes Monitori!
@@ -396,7 +407,7 @@ Tudo normal! Usuário ativo e engajado.
 # Dia 30 - Usuário Frequente
 👤 Cliente: Ava, análise rápida
 
-🤖 Ava: Claro! Já sei o que você gosta de ver. 
+🤖 Ava: Claro! Já sei o que você gosta de ver.
 Buscando dados mais recentes...
 ```
 

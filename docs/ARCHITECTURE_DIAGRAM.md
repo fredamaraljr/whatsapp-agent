@@ -7,46 +7,46 @@ graph TD
     A[Mensagem WhatsApp] --> B[webhook_endpoint]
     B --> C[Extrair user_phone]
     C --> D[LangGraph: START]
-    
+
     D --> E[user_identification_node]
     E --> F{Usuário?}
-    
+
     F -->|Admin + comando| G[admin_command_node]
     F -->|Não verificado| H[group_verification_node]
     F -->|Verificado| I[memory_extraction_node]
-    
+
     G --> J{Comando processado?}
     J -->|Sim| K[END]
     J -->|Não| I
-    
+
     H --> L{Primeira interação?}
     L -->|Sim: Enviar pergunta| K
     L -->|Não: Processar resposta| M{Grupo identificado?}
-    
+
     M -->|Sim| N[Verificar e confirmar]
     M -->|Não| O[Pedir clarificação]
-    
+
     N --> K
     O --> K
-    
+
     I --> P[router_node]
     P --> Q[context_injection_node]
     Q --> R[memory_injection_node]
     R --> S[knowledge_retrieval_node]
-    
+
     S --> T{user_group?}
     T -->|Admin| U[Prompt Admin]
     T -->|Monitori| V[Prompt Monitori]
     T -->|FPS| W[Prompt FPS]
     T -->|Ávila| X[Prompt Ávila]
     T -->|FFL| Y[Prompt FFL]
-    
+
     U --> Z[conversation_node]
     V --> Z
     W --> Z
     X --> Z
     Y --> Z
-    
+
     Z --> AA{Resumir?}
     AA -->|Sim| AB[summarize_conversation_node]
     AA -->|Não| K
@@ -134,6 +134,7 @@ graph TD
 ## Componentes do Sistema
 
 ### 1. User Management Layer
+
 ```
 ┌────────────────────────────────────┐
 │      UserManager (SQLite)          │
@@ -148,6 +149,7 @@ graph TD
 ```
 
 ### 2. Admin Layer
+
 ```
 ┌────────────────────────────────────┐
 │      AdminCommands                 │
@@ -163,6 +165,7 @@ graph TD
 ```
 
 ### 3. Prompt Selection Layer
+
 ```
 ┌────────────────────────────────────┐
 │   get_character_response_chain()   │
@@ -183,6 +186,7 @@ graph TD
 ```
 
 ### 4. Knowledge Retrieval Layer
+
 ```
 ┌────────────────────────────────────┐
 │   Group-Specific Knowledge         │
@@ -246,7 +250,7 @@ AICompanionState:
     workflow: str
     memory_context: str
     knowledge_context: str
-    
+
     # NEW: User management fields
     user_phone: Optional[str]
     user_group: Optional[str]
