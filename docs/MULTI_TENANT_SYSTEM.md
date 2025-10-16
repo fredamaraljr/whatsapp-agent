@@ -44,7 +44,7 @@ Você é um especialista em análise de dados...
 
 Funcionalidades:
 
-- Análises de dados via Mitto
+- Análises de dados via Mito
 - Insights e relatórios
 - Dashboards e métricas
 - Business intelligence
@@ -162,8 +162,8 @@ Adicionar as seguintes variáveis:
 ADMIN_PHONE_NUMBER=+5511991668852
 
 # Monitori
-MITTO_API_KEY=your_mitto_api_key
-MITTO_DATABASE_URL=your_database_url
+MITO_API_KEY=your_mito_api_key
+MITO_DATABASE_URL=your_database_url
 
 # FPS
 FPS_CALENDAR_PATH=/app/data/fps_calendar.json
@@ -256,7 +256,7 @@ Usuários por grupo:
 
 1. **Implementar ferramentas específicas:**
 
-   - [ ] Integração Mitto para Monitori
+   - [ ] Integração Mito para Monitori
    - [ ] Sistema de calendário para FPS
    - [ ] Upload de casos clínicos para FPS
    - [ ] Modo demo completo para Ávila

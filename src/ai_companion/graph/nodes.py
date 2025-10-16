@@ -322,3 +322,67 @@ async def admin_command_node(state: AICompanionState) -> dict:
         return {"messages": [AIMessage(content=response)]}
     
     return {}
+
+
+async def mito_analysis_node(state: AICompanionState) -> dict:
+    """Process data analysis requests for Monitori group using Mito.
+    
+    This node is triggered when a Monitori user asks for data analysis.
+    """
+    from ai_companion.modules.mito_integration import MitoHandler
+    
+    user_group = state.get("user_group")
+    
+    # Only process for Monitori users
+    if user_group != "monitori":
+        return {}
+    
+    last_message = state["messages"][-1].content
+    
+    # Initialize Mito handler
+    mito = MitoHandler(workspace_dir="./data/mito_workspace")
+    
+    # Check if message contains data analysis keywords
+    analysis_keywords = [
+        'analis', 'dados', 'data', 'csv', 'excel', 'gráfico', 'chart',
+        'visualiz', 'tabela', 'relatório', 'dashboard', 'filtrar', 'agrupar'
+    ]
+    
+    message_lower = last_message.lower()
+    is_data_request = any(keyword in message_lower for keyword in analysis_keywords)
+    
+    if is_data_request:
+        # Analyze the request
+        context = {}
+        analysis_result = await mito.analyze_data_request(last_message, context)
+        
+        # Build response based on analysis
+        if analysis_result["requires_data"]:
+            response = f"""
+Entendi que você precisa de análise de dados!
+
+**Tipo de análise identificada**: {analysis_result['request_type']}
+
+Para prosseguir, preciso que você:
+1. Envie o arquivo de dados (CSV, Excel ou JSON)
+2. Ou me informe o caminho do arquivo no sistema
+
+Com o Mito, posso:
+- Explorar e visualizar seus dados
+- Aplicar transformações e filtros
+- Gerar código Python automaticamente
+- Criar gráficos e relatórios
+
+{mito.get_mito_notebook_link()}
+
+O que você gostaria de fazer?
+"""
+        else:
+            response = "Vou processar sua análise de dados. Um momento..."
+        
+        return {
+            "messages": [AIMessage(content=response)],
+            "mito_context": analysis_result,
+        }
+    
+    return {}

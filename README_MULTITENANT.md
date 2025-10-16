@@ -122,12 +122,16 @@ Por favor, responda com o número...
 
 **Features:**
 
-- Análise de dados via Mitto
-- Insights e dashboards
-- Métricas de negócio
-- Relatórios customizados
+- **🎯 Análise de Dados via Mito**: Interface tipo Excel com geração automática de código Python
+- **📈 Visualizações**: Gráficos e charts interativos
+- **🔄 Transformações**: Filtros, agregações, pivotagem automatizada
+- **📊 Dashboards**: Insights e métricas de negócio em tempo real
+- **💾 Exportação**: Resultados em CSV, Excel, JSON
+- **🐍 Código Automático**: Pandas code gerado para cada operação
 
 **Verificação:** Confirmar que é cliente Monitori
+
+**Documentação:** [Ver Guia Mito](docs/MITO_INTEGRATION.md)
 
 ### 🏥 FPS (Faculdade Pernambucana de Saúde)
 
@@ -381,7 +385,7 @@ Este projeto está sob a licença MIT. Ver arquivo `LICENSE` para mais detalhes.
 
 ### Próximas Features
 
-- [ ] Integração Mitto para Monitori
+- [ ] Integração Mito para Monitori
 - [ ] Sistema de calendário FPS
 - [ ] Upload de casos clínicos FPS
 - [ ] Modo demo interativo Ávila

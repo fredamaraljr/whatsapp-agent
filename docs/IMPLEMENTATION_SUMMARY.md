@@ -36,7 +36,7 @@ O **AI Companion** foi transformado com sucesso em um **sistema multi-tenant** q
 #### 📊 Monitori (Análise de Dados)
 
 - ✅ Prompt especializado em análise de dados
-- ✅ Integração preparada para Mitto
+- ✅ Integração preparada para Mito
 - ✅ Linguagem de negócios e métricas
 - ✅ Foco em insights e dashboards
 
@@ -138,7 +138,7 @@ src/ai_companion/
 | Grupo        | Verificação  | Prompt  | Features                | Status              |
 | ------------ | ------------ | ------- | ----------------------- | ------------------- |
 | **Admin**    | Auto (phone) | Técnico | Comandos, Stats, Config | ✅ Pronto           |
-| **Monitori** | Pergunta     | Dados   | Análise via Mitto       | ✅ Estrutura pronta |
+| **Monitori** | Pergunta     | Dados   | Análise via Mito        | ✅ Estrutura pronta |
 | **FPS**      | Pergunta     | Médico  | Calendário, Casos       | ✅ Estrutura pronta |
 | **Ávila**    | Pergunta     | Demo    | Simulações              | ✅ Pronto           |
 | **FFL**      | Pergunta     | Aviação | Manuais A320            | ✅ Pronto           |
@@ -224,8 +224,8 @@ USER_DB_PATH=/app/data/users.db
 SHORT_TERM_MEMORY_DB_PATH=/app/data/memory.db
 
 # Monitori (opcional)
-MITTO_API_KEY=your_api_key
-MITTO_DATABASE_URL=your_db_url
+MITO_API_KEY=your_api_key
+MITO_DATABASE_URL=your_db_url
 
 # FPS (opcional)
 FPS_CALENDAR_PATH=/app/data/fps_calendar.json
@@ -244,7 +244,7 @@ FPS_CLINICAL_CASES_PATH=/app/knowledge/fps_clinical_cases
 
 ### Curto Prazo
 
-1. **Implementar Mitto Integration** para Monitori
+1. **Implementar Mito Integration** para Monitori
 2. **Sistema de Calendário** para FPS
 3. **Upload de Casos Clínicos** para FPS
 4. **Modo Demo Interativo** para Ávila

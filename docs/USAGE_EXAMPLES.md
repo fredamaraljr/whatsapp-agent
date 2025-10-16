@@ -169,7 +169,7 @@ Posso ajudá-lo com:
 - Relatórios customizados
 
 [Esta é uma simulação para demonstração. Em produção, teria
-acesso real aos dados via Mitto]
+acesso real aos dados via Mito]
 
 O que gostaria de analisar?
 ```
@@ -292,7 +292,7 @@ o desempenho da equipe...
 
 👤 Prospect: Quais foram as vendas de ontem?
 
-🤖 Ava: [Simulando busca no Mitto]
+🤖 Ava: [Simulando busca no Mito]
 
 📊 **Vendas - 14/10/2025**
 
@@ -306,7 +306,7 @@ Por região:
 Top vendedor: João Silva (R$ 8.200)
 
 [DEMO: Em produção real, esses dados viriam do seu banco
-via integração Mitto]
+via integração Mito]
 
 Legal, né? É assim que funciona para clientes Monitori!
 ```

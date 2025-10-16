@@ -35,3 +35,5 @@ class AICompanionState(MessagesState):
     user_verified: bool
     awaiting_verification: bool
     knowledge_context: str
+    mito_context: Optional[dict]
+    fps_calendar: Optional[str]

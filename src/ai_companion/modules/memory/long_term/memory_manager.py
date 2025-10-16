@@ -32,12 +32,27 @@ class MemoryManager:
             api_key=settings.GROQ_API_KEY,
             temperature=0.1,
             max_retries=2,
-        ).with_structured_output(MemoryAnalysis)
+        )
 
     async def _analyze_memory(self, message: str) -> MemoryAnalysis:
         """Analyze a message to determine importance and format if needed."""
         prompt = MEMORY_ANALYSIS_PROMPT.format(message=message)
-        return await self.llm.ainvoke(prompt)
+        
+        try:
+            # Use structured output with proper tool binding
+            llm_with_structure = self.llm.with_structured_output(
+                MemoryAnalysis,
+                method="json_mode",
+                include_raw=False
+            )
+            return await llm_with_structure.ainvoke(prompt)
+        except Exception as e:
+            self.logger.warning(f"Structured output failed, using fallback: {e}")
+            # Fallback: treat all messages as potentially important
+            return MemoryAnalysis(
+                is_important=False,  # Skip storage on error
+                formatted_memory=None
+            )
 
     async def extract_and_store_memories(self, message: BaseMessage) -> None:
         """Extract important information from a message and store in vector store."""

@@ -80,7 +80,7 @@ graph TD
         │       Data   Medical │Aviation │
         │      Analysis Cases  │ Manuals │
         │          │      │    └─────────┘
-    Commands    Mitto  Calendar
+    Commands    Mito  Calendar
      Stats      APIs   Clinical
     Prompts           Cases
     Config

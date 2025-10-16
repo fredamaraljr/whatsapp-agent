@@ -33,8 +33,8 @@ class Settings(BaseSettings):
     ADMIN_PHONE_NUMBER: str = "+5511991668852"
     
     # Monitori configuration
-    MITTO_API_KEY: str | None = None
-    MITTO_DATABASE_URL: str | None = None
+    MITO_API_KEY: str | None = None
+    MITO_DATABASE_URL: str | None = None
     
     # FPS configuration
     FPS_CALENDAR_PATH: str = "/app/data/fps_calendar.json"

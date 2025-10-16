@@ -33,8 +33,8 @@ ADMIN_PHONE_NUMBER=+5511991668852
 USER_DB_PATH=/app/data/users.db
 
 # === NOVO: Monitori Integration ===
-MITTO_API_KEY=your_mitto_api_key_here
-MITTO_DATABASE_URL=your_database_connection_string
+MITO_API_KEY=your_mito_api_key_here
+MITO_DATABASE_URL=your_database_connection_string
 
 # === NOVO: FPS Configuration ===
 FPS_CALENDAR_PATH=/app/data/fps_calendar.json
